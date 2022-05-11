@@ -6,6 +6,27 @@ from bs4 import BeautifulSoup
 # eg: https://gplinks.co/XXXX
 url = ""
 
+# gplink url
+def link_handler(update, context):
+    args = update.message.text.split(" ", maxsplit=1)
+    if len(args) > 1:
+        link = args[1]
+    else:
+        link = ''
+    try:
+      is_gplink = True if "droplink" in link else False
+      if is_gplink:
+          msg = sendMessage(f'𝗕𝘆𝗽𝗮𝘀𝘀𝗶𝗻𝗴 𝘆𝗼𝘂𝗿 𝗚𝗽𝗹𝗶𝗻𝗸 𝗟𝗶𝗻𝗸: <code>{link}</code>\n\n𝙋𝙡𝙚𝙖𝙨𝙚 𝙬𝙖𝙞𝙩 𝙖 𝙢𝙞𝙣𝙪𝙩𝙚.', context.bot, update)
+          baashax = gplinks_bypass(link)
+          links = baashax.get('url')
+          deleteMessage(context.bot, msg)
+          bx = sendMessage(f"𝙄'𝙫𝙚 𝙎𝙚𝙣𝙙 𝙩𝙝𝙚 𝘽𝙮𝙥𝙖𝙨𝙨𝙚𝙙 𝙇𝙞𝙣𝙠 𝙩𝙤 𝙮𝙤𝙪𝙧 𝙋𝙈.", context.bot, update)
+          sendPrivate(f'𝗚𝗶𝘃𝗲𝗻 𝗟𝗶𝗻𝗸: <code>{link}</code>\n\n𝗕𝘆𝗽𝗮𝘀𝘀𝗲𝗱 𝗟𝗶𝗻𝗸: <code>{links}</code>', context.bot, update)
+      else:
+          sendMessage('𝗦𝗲𝗻𝗱 𝗚𝗽𝗹𝗶𝗻𝗸 𝗟𝗶𝗻𝗸𝘀 𝗮𝗹𝗼𝗻𝗴 𝘄𝗶𝘁𝗵 𝗰𝗼𝗺𝗺𝗮𝗻𝗱.', context.bot, update)
+    except DDLException as e:
+        LOGGER.error(e)
+
 # =======================================
 
 def gplinks_bypass(url: str):
